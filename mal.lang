@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+ Author: Ben West
+ Copyright (C) 2010 Ben West
+
+ This library is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Library General Public
+ License as published by the Free Software Foundation; either
+ version 2 of the License, or (at your option) any later version.
+
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Library General Public License for more details.
+
+ You should have received a copy of the GNU Library General Public
+ License along with this library; if not, write to the
+ Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ Boston, MA 02111-1307, USA.
+
+-->
+<!--
+	Somewhat copied and pasted from nasm.lang
+-->
+<language id="mal" _name="MAL" version="2.0" _section="Others">
+    <metadata>
+      <property name="mimetypes">text/mal</property>
+      <property name="globs">*.s</property>
+      <property name="line-comment-start">#</property>
+      <property name="line-comment-start">;</property>      
+    </metadata>
+
+    <styles>
+        <style id="comment"           	_name="Comment"             	map-to="def:comment"/>
+        <style id="error"             	_name="Error"               	map-to="def:error"/>
+        <style id="string"            	_name="String"              	map-to="def:string"/>
+        <style id="preprocessor"      	_name="Preprocessor"        	map-to="def:preprocessor"/>
+        <style id="opcode"            	_name="Opcode"              	map-to="def:keyword"/>
+        <style id="register"          	_name="Register"            	map-to="def:special-char"/>
+        <style id="type"              	_name="Data Type"           	map-to="def:type"/>
+        <style id="escaped-character" 	_name="Escaped Character"   	map-to="def:special-char"/>
+        <style id="decimal"           	_name="Decimal number"  	map-to="def:decimal"/>
+	<style id="label"		_name="Label"			map-to="def:identifier" />
+    </styles>
+    
+    <default-regex-options case-sensitive="false"/>
+
+    <definitions>
+        <define-regex id="escaped-character" extended="true">
+            \\(      # leading backslash
+            [\\\"\'] # escaped character
+            )
+        </define-regex>
+
+        <context id="mal">
+            <include>	
+		<context id="preprocessor" style-ref="preprocessor">
+			<prefix>^\.</prefix>
+			<keyword>data</keyword>
+			<keyword>text</keyword>
+		</context>
+
+                <context id="comment" style-ref="comment" end-at-line-end="true">
+                    <start>#</start>
+                    <include>
+                      <context ref="def:in-line-comment"/>
+                    </include>
+                </context>
+                <context id="comment2" style-ref="comment" end-at-line-end="true">
+                    <start>;</start>
+                    <include>
+                      <context ref="def:in-line-comment"/>
+                    </include>
+                </context>
+                <context id="string" style-ref="string" end-at-line-end="true">
+                    <start>"</start>
+                    <end>"</end>
+                    <include>
+                        <context id="escaped-characterw" style-ref="escaped-character">
+                            <match>\%{escaped-character}</match>
+                        </context>
+                    </include>
+                </context>
+                <context id="string2" style-ref="string" end-at-line-end="true">
+                    <start>'</start>
+                    <end>'</end>
+                    <include>
+                        <context id="escaped-characters" style-ref="escaped-character">
+                            <match>\%{escaped-character}</match>
+                        </context>
+                    </include>
+                </context>
+
+                <context id="decimal" style-ref="decimal">
+                    <match extended="true">
+                        (?&lt;![\w\.])
+                        [0-9]+
+                        (?![\w\.])
+                    </match>
+                </context>
+
+                <context id="registers" style-ref="register">			
+			<match extended="true">
+				(\$
+					(
+						\d|[12]\d|3[12]|
+						(ra)|
+						([vk][01])|
+						(a[0-3t])|
+						(t[0-9])|
+						(s[0-7p])|
+						([gsf]p)|
+						(zero)
+					)
+				)\b
+			</match>			
+                </context>
+
+		<context id="label" style-ref="label">
+			<match extended="true">
+				^\w+:
+			</match>
+		</context>
+
+                <!-- Opcodes -->
+		<context id="opcodes_simple" style-ref="opcode">
+			<!-- MAL Opcodes -->
+			<keyword>lb</keyword>
+			<keyword>lbu</keyword>
+			<keyword>sb</keyword>
+			<keyword>lh</keyword>
+			<keyword>lhu</keyword>
+			<keyword>sh</keyword>
+			<keyword>lw</keyword>
+			<keyword>lwu</keyword>
+			<keyword>sw</keyword>
+			<keyword>ld</keyword>
+			<keyword>sd</keyword>
+			<keyword>l\.d</keyword>
+			<keyword>s\.d</keyword>
+			<keyword>halt</keyword>
+			<keyword>daddi</keyword>
+			<keyword>daddui</keyword>
+			<keyword>andi</keyword>
+			<keyword>ori</keyword>
+			<keyword>xori</keyword>
+			<keyword>lui</keyword>
+			<keyword>slti</keyword>
+			<keyword>sltiu</keyword>
+			<keyword>beq</keyword>
+			<keyword>bne</keyword>
+			<keyword>beqz</keyword>
+			<keyword>bnez</keyword>
+			<keyword>j</keyword>
+			<keyword>jr</keyword>
+			<keyword>jal</keyword>
+			<keyword>jalr</keyword>
+			<keyword>dsll</keyword>
+			<keyword>dsrl</keyword>
+			<keyword>dsra</keyword>
+			<keyword>dsllv</keyword>
+			<keyword>dsrlv</keyword>
+			<keyword>dsrav</keyword>
+			<keyword>movz</keyword>
+			<keyword>movn</keyword>
+			<keyword>nop</keyword>
+			<keyword>and</keyword>
+			<keyword>or</keyword>
+			<keyword>xor</keyword>
+			<keyword>slt</keyword>
+			<keyword>sltu</keyword>
+			<keyword>dadd</keyword>
+			<keyword>daddu</keyword>
+			<keyword>dsub</keyword>
+			<keyword>dsubu</keyword>
+			<keyword>dmul</keyword>
+			<keyword>dmulu</keyword>
+			<keyword>ddiv</keyword>
+			<keyword>ddivu</keyword>
+			<keyword>add\.d</keyword>
+			<keyword>sub\.d</keyword>
+			<keyword>mul\.d</keyword>
+			<keyword>div\.d</keyword>
+			<keyword>mov\.d</keyword>
+			<keyword>cvt\.d\.l</keyword>
+			<keyword>cvt\.l\.d</keyword>
+			<keyword>c\.lt\.d</keyword>
+			<keyword>c\.le\.d</keyword>
+			<keyword>c\.eq\.d</keyword>
+			<keyword>bc1f</keyword>
+			<keyword>bc1t</keyword>
+			<keyword>mtc1</keyword>
+			<keyword>mfc1</keyword>
+                </context>                               
+                
+                <context id="types" style-ref="type">
+			<prefix>\.</prefix>
+			<keyword>data</keyword>
+			<keyword>text</keyword>
+			<keyword>code</keyword>
+			<keyword>org</keyword>
+			<keyword>space</keyword>
+			<keyword>asciiz</keyword>
+			<keyword>ascii</keyword>
+			<keyword>align</keyword>
+			<keyword>word</keyword>
+			<keyword>byte</keyword>
+			<keyword>word32</keyword>
+			<keyword>word16</keyword>
+			<keyword>double</keyword>
+                </context>         
+            </include>
+        </context>
+        
+    </definitions>
+</language>
