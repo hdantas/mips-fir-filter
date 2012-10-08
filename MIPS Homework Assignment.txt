@@ -1,1 +1,0 @@
-Attached you will find the homework assignment for ECA and MCA for 2012. The assignment comprises the implementation of a small program in MIPS assembly code for the WinMIPS64 MIPS emulator. Please download and perform the assignment. The assignment is due for October 10, 2012. Assignments delivered after this date are not considered for evaluation and will not be graded.
