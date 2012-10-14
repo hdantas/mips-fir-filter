@@ -1,0 +1,46 @@
+\section{Optimizations Performed}
+%Min /Max 1-2 pages
+
+
+\subsection{Algebraic simplifications}
+
+In order to optimize the program the original source code was rewritten, please see the \texttt{fir\_filter} function in \texttt{fir\_filter\_optimized.c}. In essence the outer loop was swapped with the inner loop since this way the number of reads and stores is reduced. 
+
+\subsection{Loop unrolling}
+
+In the source code there are a total of 3 loops. Assuming the only variable that may change is \tap the only real candidate for unrolling is the loop in the main function. In the filter, both loops' sizes are dependent on the size of \tap making it impossible to unroll. Moreover no more information about this variable is provided (\eg \tap is even or odd) so it is not possible to reduce the unrolling factor.
+
+On the other hand, for the main the number of variables to print is known at compile time and consequently loop can be fully unrolled. However, there is an upper bound on the code's size and therefore a factor of 3\footnote{Since 64 is not divisible by 3 some instructions were added at the end of the loop} was used.
+
+\subsection{Common subexpression elimination}
+With the restructured algorithm it is now possible to store \texttt{b[j]} just once in a temporary variable and then use it for all elements of \texttt{y}.
+
+This technique was also used for the expression \texttt{x[i-j]}, in particular using distributivity $8 \cdot (i-j) = i\cdot8 - j\cdot8$. 
+
+\subsection{Code scheduling}
+After implementing the three aforementioned optimizations the code was reorganized by moving instructions and renaming a few registers to avoid, as much as possible, stalls and redundancies.
+
+\section{Simple vs. Optimized}
+ 
+\begin{table}[H]
+\centering
+\begin{tabular}{c|ccc||ccc}
+\bottomrule
+\rowcolor{Cyan}
+\color{white} \textbf{\tap}&
+\color{white} \textbf{Cycles}&
+\color{white} \textbf{Instructions}&
+\color{white} \textbf{CPI} &
+\color{white} \textbf{Cycles}&
+\color{white} \textbf{Instructions}&
+\color{white} \textbf{CPI} \\\toprule
+4		& 7253		& 5039	&	1.4359	 & 4618		& 2967	&	1.556	\\
+8 		& 12801		& 8439 & 1.517				& 8962		& 5367	&	1.670	\\
+16 	& 21401		& 13703 & 1.562			& 15730		& 9111	&	1.726	\\
+32		& 28617		& 18087 & 1.582 			& 21586		& 12375	&	1.744		\\\bottomrule
+\end{tabular}
+\caption{Comparison between Simple and Optimized versions.}
+\label{tbl:comp}
+\end{table}
+
+As table~\ref{tbl:comp} indicates there is a significant improvement after optimizations. For a \tap of 32 the CPI speedup is 10.24\% and the number of cycles is reduced by 32.6\%. 

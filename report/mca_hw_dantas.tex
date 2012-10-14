@@ -1,0 +1,75 @@
+\documentclass[a4paper,12pt]{article}
+
+\newcommand{\longtitle}[0]{Home Work Assignment - MCA - Henrique Dantas, 4172922}
+\newcommand{\singlespace}[0]{0.5cm}
+\newcommand{\doublespace}[0]{0.8cm}
+\newcommand{\RA}{$\mathrm{R_A}$}
+\newcommand{\RB}{$\mathrm{R_B}$}
+\newcommand{\RBB}{$\mathrm{R_{B_2}}$}
+\newcommand{\ie}{\emph{i.e.~}}
+\newcommand{\tap}{\texttt{TAP~}}
+\newcommand{\eg}{\emph{eg.~}}
+
+\addtolength{\oddsidemargin}{-.3in}
+\addtolength{\evensidemargin}{-.3in}
+\addtolength{\textwidth}{0.6in}
+
+\addtolength{\topmargin}{-.4in}
+\addtolength{\textheight}{0.8in}
+%[T1]{fontenc}
+\usepackage{booktabs}
+%\usepackage[bottom]{footmisc}%make sure footnotes stay at the bottom of the page
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[noindentafter]{titlesec}
+\titleformat{\section}[hang]{\normalfont\bfseries\color{NavyBlue}}{\thesection.}{0.3cm}{}
+\titlespacing*{\section}{0cm}{1cm}{0.6cm}
+\titleformat{\subsection}[hang]{\footnotesize\bfseries\color{ProcessBlue}}{\thesubsection.}{0.2cm}{}
+\titlespacing*{\subsection}{0cm}{0.5cm}{0.3cm}
+\titleformat{\subsubsection}[hang]{\footnotesize\color{Emerald}}{\thesubsubsection.}{0.1cm}{}
+\titlespacing*{\subsubsection}{0cm}{0.25cm}{0.15cm}
+
+\usepackage{graphicx}
+\graphicspath{
+{figures/}
+}
+
+\usepackage[noabbrev]{cleveref}
+\usepackage{url}
+\usepackage[plainpages=false,final]{hyperref}
+\hypersetup
+{
+        colorlinks=false,
+        linkcolor=black,       % \ref{...} and \pageref{...}
+        urlcolor=black,       % \href{...}{...} external (URL)
+        filecolor=black,     % \href{...} local file
+        pdftitle={\longtitle},
+        pdfauthor={Henrique Dantas},
+        pdfsubject={ET4074 Modern Computer Architectures},	
+        pdfkeywords={TUDelft},
+        pdfproducer={pdfLaTeX},
+        bookmarksopen=true,
+        pdfborder={0 0 0}
+}
+
+
+
+
+\begin{document}
+\vspace*{-3cm}{\normalsize{\textbf{\longtitle}}}
+
+
+\input{q1}
+%\input{q2}
+
+%\input{q3}
+
+
+
+
+
+\end{document}
+
+
