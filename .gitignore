@@ -2,3 +2,4 @@
 *.cod
 *.data
 *.ini
+.DS_Store
